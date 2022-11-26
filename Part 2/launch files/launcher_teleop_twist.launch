@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- 
+        This launch file launches the rexrov with teleop_twist_keyboard 
+        control in an empty underwater world. We included the 3 required 
+        components in order for the rexrov to be launched in a water
+        environment and be contrilled by our keyboard.
+        Arguments are used to connect the three separate launch files 
+        when necessary.
+        
+        Source repo: https://github.com/my-name-is-D/uuv_simulator.git
+    -->
+
+    <include file="$( find uuv_gazebo_worlds)/launch/empty_underwater_world.launch">
+        <!-- 
+            Arguments go here.      
+            Optional args:
+            gui, paused, set_timeout, timeout
+            
+            If simulator is laggy on startup,
+            set gazebo to launch paused:
+        -->
+        <arg name="paused" value="false" />
+    </include>
+    <!-- launch the rexrov -->
+    <include file="$(find uuv_gazebo)/launch/rexrov_demos/rexrov_default.launch">
+        <!-- 
+            Optional args: 
+            debug, x, y, z, roll, pitch, yaw, mode, namespace, use_ned_frame 
+        -->
+        <arg name="namespace" value="rexrov" />
+    </include>
+     <!-- launch the keyboard control -->
+    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen">
+        <!-- important to remap the output to rexrov's topic -->
+        <remap from="cmd_vel" to="rexrov/cmd_vel" />
+    </node>
+</launch>
