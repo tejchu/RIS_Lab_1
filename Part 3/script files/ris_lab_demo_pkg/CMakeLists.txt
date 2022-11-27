@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ris_lab_demo_pkg)
+project(ris_lab_1)
 
 find_package(
     catkin REQUIRED COMPONENTS
