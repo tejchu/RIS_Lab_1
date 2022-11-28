@@ -1,0 +1,8 @@
+<launch>
+    <!-- Invoke the empty underwater world in Gazebo -->
+    <include file="$(find uuv_gazebo_worlds)/launch/empty_underwater_world.launch" />
+    <!-- Spawn rexrov in the empty underwater world -->
+    <include file="$(find uuv_gazebo)/launch/rexrov_demos/rexrov_wrench_control.launch" />
+    <!-- Launch teleop wrench control node -->
+    <node pkg="ris_lab_demo_pkg" type="thruster_manager.py" name="thruster_manager" output="screen" />
+</launch>

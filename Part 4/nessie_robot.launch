@@ -1,0 +1,20 @@
+<launch>
+    <arg name="paused" default="false" />
+    <arg name="use_sim_time" default="true" />
+    <arg name="gui" default="true" />
+    <arg name="headless" default="false" />
+    <arg name="debug" default="false" />
+    <arg name="model" default="$(find ris_lab_demo_pkg)/robot.urdf" />
+    <!-- Use the empty_underwater_world.launch to create the underwater world in Gazebo -->
+    <include file="$(find uuv_gazebo_worlds)/launch/empty_underwater_world.launch">
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="paused" value="$(arg paused)" />
+    </include>
+    <!-- Save robot urdf as a parameter -->
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+    <!-- Put our robot in the emptyu underwater Gazebo world -->
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" args="-z 1.0 -unpause -urdf -model nessie -param robot_description" respawn="false" output="screen" />
+    <!-- Launch the nodes written in part 3 and part 4 c for keyboard commands and thruster command publisher-->
+    <node pkg="ris_lab_demo_pkg" type="thruster_manager.py" name="thruster_manager" output="screen" />
+    <node pkg="ris_lab_demo_pkg" type="thrusters.py" name="thrusters" output="screen" />
+</launch>
